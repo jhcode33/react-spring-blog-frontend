@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 
 function CommentWrite(props) {
 
 	const { headers, setHeaders } = useContext(HttpHeadersContext);
+	const { boardId } = useParams(); // 파라미터 가져오기
 
 	const id = localStorage.getItem("id");
-	const seq = props.seq;
 
 	const navigate = useNavigate();
 
@@ -22,12 +22,10 @@ function CommentWrite(props) {
 	const createComment = async() => {
 
 		const req = {
-			id: id,
 			content: content,
-			bbsSeq: seq
 		}
 
-		await axios.post(`http://localhost:3000/comment`, req, { params: {"bbsSeq": seq}, headers: headers})
+		await axios.post(`http://localhost:8989/board/${boardId}/comment/write`, req, {headers: headers})
 		.then((resp) => {
 			console.log("[CommentWrite.js] createComment() success :D");
 			console.log(resp.data);
@@ -62,7 +60,7 @@ function CommentWrite(props) {
 				</div>
 				{/* 하단 영역 (댓글 내용) */}
 				<div className="my-3 d-flex justify-content-center">
-					<textarea className="col-10" rows="5" value={content} onChange={chageContent}></textarea>
+					<textarea className="col-10" rows="1" value={content} onChange={chageContent}></textarea>
 				</div><br/><br/>
 		</>
 	)

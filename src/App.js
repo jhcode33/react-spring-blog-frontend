@@ -7,6 +7,7 @@ import Footer from "./Components/app/Footer"
 import AuthProvider from "./Components/context/AuthProvider"
 import HttpHeadersProvider from "./Components/context/HttpHeadersProvider";
 import "./css/style.css"
+import "./css/main.css"
 
 function App() {
 
@@ -20,8 +21,6 @@ function App() {
             <Main />
           </HttpHeadersProvider>
         </AuthProvider>
-
-        <Footer />
 
       </BrowserRouter>
     </div>

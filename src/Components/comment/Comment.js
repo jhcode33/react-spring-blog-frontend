@@ -9,6 +9,7 @@ import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 function Comment(props) {
 	const {auth, setAuth} = useContext(AuthContext);
 	const {headers, setHeaders} = useContext(HttpHeadersContext);
+
 	const comment = props.obj;
 
 	const navigate = useNavigate();

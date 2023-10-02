@@ -33,14 +33,14 @@ function BbsUpdate() {
 			content: content
 		}
 
-		await axios.patch(`http://localhost:3000/bbs/${bbs.seq}`, req, {headers: headers})
+		await axios.patch(`http://localhost:8989/board/${bbs.boardId}/update`, req, {headers: headers})
 		.then((resp) => {
 			console.log("[BbsUpdate.js] updateBbs() success :D");
 			console.log(resp.data);
 
-			if (resp.data.updatedRecordCount == 1) {
+			if (resp.data.boardId != null) {
 				alert("게시글을 성공적으로 수정했습니다 :D");
-				navigate(`/bbsdetail/${bbs.seq}`); // 글 상세로 이동
+				navigate(`/bbsdetail/${bbs.boardId}`); // 글 상세로 이동
 			}
 
 		})
@@ -59,7 +59,7 @@ function BbsUpdate() {
 					<tr>
 						<th className="table-primary">작성자</th>
 						<td>
-							<input type="text" className="form-control"  value={bbs.id} size="50px" readOnly />
+							<input type="text" className="form-control"  value={bbs.writerName} size="50px" readOnly />
 						</td>
 					</tr>
 

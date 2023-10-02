@@ -48,14 +48,14 @@ function BbsDetail() {
   }, []);
 
   const updateBbs = {
-    seq: bbs.seq,
-    id: bbs.id,
+    boardId: bbs.boardId,
+    writerName: bbs.writerName,
     title: bbs.title,
     content: bbs.content,
   };
 
   const parentBbs = {
-    id: bbs.id,
+    boardId: bbs.boardId,
     title: bbs.title,
   };
 
@@ -63,11 +63,11 @@ function BbsDetail() {
 		<div>
 
 			<div className="my-3 d-flex justify-content-end">
-				<Link className="btn btn-outline-secondary" to={{pathname: `/bbsanswer/${bbs.seq}` }} state={{ parentBbs: parentBbs }}><i className="fas fa-pen"></i> 답글쓰기</Link> &nbsp;
+				<Link className="btn btn-outline-secondary" to={{pathname: `/bbsanswer/${bbs.boardId}` }} state={{ parentBbs: parentBbs }}><i className="fas fa-pen"></i> 답글쓰기</Link> &nbsp;
 
 			{
-				/* 자신이 작성한 게시글인 경우에만 수정 삭제 가능 */
-				(localStorage.getItem("id") == bbs.id) ?
+				/* 자신이 작성한 게시글인 경우에만 수정, 삭제 가능 */
+				(localStorage.getItem("id") == bbs.writerName) ?
 					<>
 						<Link className="btn btn-outline-secondary"  to="/bbsupdate" state={{ bbs: updateBbs }}><i className="fas fa-edit"></i> 수정</Link> &nbsp;
 						<button className="btn btn-outline-danger"  onClick={deleteBbs}><i className="fas fa-trash-alt"></i> 삭제</button>

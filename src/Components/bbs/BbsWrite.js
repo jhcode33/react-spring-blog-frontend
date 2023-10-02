@@ -37,7 +37,7 @@ function BbsWrite() {
 			console.log(resp.data);
 
 			alert("새로운 게시글을 성공적으로 등록했습니다 :D");
-			navigate(`/bbsdetail/${resp.data.seq}`); // 새롭게 등록한 글 상세로 이동
+			navigate(`/bbsdetail/${resp.data.boardId}`); // 새롭게 등록한 글 상세로 이동
 		})
 		.catch((err) => {
 			console.log("[BbsWrite.js] createBbs() error :<");

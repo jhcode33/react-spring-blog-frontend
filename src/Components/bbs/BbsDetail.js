@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import CommentWrite from "../comment/CommentWrite";
 import CommentList from "../comment/CommentList";
 import { AuthContext } from "../context/AuthProvider";
+import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 
 function BbsDetail() {
+  const { headers, setHeaders } = useContext(HttpHeadersContext);
   const { auth, setAuth } = useContext(AuthContext);
-  const [bbs, setBbs] = useState({});
+  const [ bbs, setBbs] = useState({});
   const { boardId } = useParams(); // 파라미터 가져오기
   const navigate = useNavigate();
 
@@ -28,12 +30,12 @@ function BbsDetail() {
 
   const deleteBbs = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8989/board/${boardId}/delete`);
+      const response = await axios.delete(`http://localhost:8989/board/${boardId}/delete`, {headers: headers});
 
       console.log("[BbsDetail.js] deleteBbs() success :D");
       console.log(response.data);
 
-      if (response.data.deletedRecordCount === 1) {
+      if (response.status == 200) {
         alert("게시글을 성공적으로 삭제했습니다 :D");
         navigate("/bbslist");
       }
@@ -44,6 +46,10 @@ function BbsDetail() {
   };
 
   useEffect(() => {
+	// 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
+	setHeaders({
+		"Authorization": `Bearer ${localStorage.getItem("bbs_access_token")}`
+	});
     getBbsDetail();
   }, []);
 

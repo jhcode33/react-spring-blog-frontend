@@ -16,12 +16,10 @@ function BbsList() {
   // Paging
   const [page, setPage] = useState(1);
   const [totalCnt, setTotalCnt] = useState(0);
-  
-  let navigate = useNavigate();
 
-  const getBbsList = async (choice, search, page) => {
+  // 게시글 전체 조회
+  const getBbsList = async (page) => {
     try {
-		// 게시글 전체 조회
 		const response = await axios.get("http://localhost:8989/board/list", {
 			params: {"page": page - 1},
 		  });
@@ -37,26 +35,39 @@ function BbsList() {
     }
   };
 
+  // 게시글 검색
+  const search = async () => {
+    try {
+      const response = await axios.get("http://localhost:8989/board/search", {
+        params: {
+          page: page - 1,
+          title: choiceVal === "title" ? searchVal : "",
+          content: choiceVal === "content" ? searchVal : "",
+          writerName: choiceVal === "writer" ? searchVal : "",
+        },
+      });
+
+      console.log("[BbsList.js searchBtn()] success :D");
+      console.log(response.data);
+
+      setBbsList(response.data.content);
+      setTotalCnt(response.data.totalElements);
+    } catch (error) {
+      console.log("[BbsList.js searchBtn()] error :<");
+      console.log(error);
+    }
+  };
+
   // 첫 로딩 시, 한 페이지만 가져옴
   useEffect(() => {
     getBbsList("", "", 1);
   }, []);
 
+  // 검색 조건 저장
   const changeChoice = (event) => { setChoiceVal(event.target.value);};
   const changeSearch = (event) => { setSearchVal(event.target.value);};
 
-  const search = () => {
-    console.log(
-      "[BbsList.js searchBtn()] choiceVal=" +
-        choiceVal +
-        ", searchVal=" +
-        searchVal
-    );
-
-    navigate("/bbslist");
-    getBbsList(choiceVal, searchVal, 1);
-  };
-
+  // 페이징 보여주기 
   const changePage = (page) => {
     setPage(page);
     getBbsList(choiceVal, searchVal, page);
@@ -102,7 +113,6 @@ function BbsList() {
         </tbody>
       </table>
       <br />
-
 
       <table className="table table-hover">
         <thead>

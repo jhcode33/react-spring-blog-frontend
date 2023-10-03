@@ -5,12 +5,15 @@
     flex-direction: column;
     min-height: 100vh;
   }
+
+main div.py-4 {
+padding-bottom: 0 !important;
+}
   
 main {
     flex: 1;
     overflow-y: auto; /* 내용이 길어질 경우 스크롤바 표시 */
     box-sizing: border-box; /* border와 padding을 높이에 포함 */
-    padding-bottom: 80px; /* Footer의 높이만큼 여백 추가 */
 }
 
   

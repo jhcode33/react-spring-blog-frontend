@@ -123,26 +123,24 @@ function BbsDetail() {
 
 				<tr>
 					<th>내용</th>
-					<td>
-					<div>{bbs.content}</div>
-					</td>
+					<td></td>
 				</tr>
 				</tbody>
 				</table>
 
+				<div className="content-box">{bbs.content}</div>
 				
+				 {/* 댓글 리스트 컴포넌트 */}
+				 <CommentList comments={bbs.comments} />
 
-				{/* 댓글 작성 컴포넌트 */}
+				 				{/* 댓글 작성 컴포넌트 */}
 				{
 					(auth) ? // 로그인한 사용자만 댓글 작성 가능
 						<CommentWrite boardId={boardId}/>
 					:
 						null
 				}
-				
 
-				{/* 댓글 리스트 컴포넌트 */}
-				<CommentList  boardId={boardId}/>
 
 			</div>
 		</div>

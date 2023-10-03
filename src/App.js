@@ -21,7 +21,7 @@ function App() {
             <Main />
           </HttpHeadersProvider>
         </AuthProvider>
-
+            
       </BrowserRouter>
     </div>
   );

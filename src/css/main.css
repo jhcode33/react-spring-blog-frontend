@@ -1,19 +1,14 @@
 /* Main.css */
 
-.main-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
 main div.py-4 {
-padding-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
   
 main {
     flex: 1;
     overflow-y: auto; /* 내용이 길어질 경우 스크롤바 표시 */
     box-sizing: border-box; /* border와 padding을 높이에 포함 */
+    min-height: 85.3vh; /* 화면 높이에 100% 맞추기 */
 }
 
   

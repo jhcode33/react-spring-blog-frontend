@@ -8,6 +8,7 @@ import { AuthContext } from "../context/AuthProvider";
 import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 
 import "../../css/bbsdetail.css"; // 추가: 스타일 파일 import
+import FileDisplay from "../file/FileDisplay";
 
 function BbsDetail() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -129,6 +130,9 @@ function BbsDetail() {
 				</table>
 
 				<div className="content-box">{bbs.content}</div>
+				<div>
+					<FileDisplay files={bbs.files} boardId={bbs.boardId} />
+				</div>
 				
 				 {/* 댓글 리스트 컴포넌트 */}
 				 <CommentList boardId={bbs.boardId} />

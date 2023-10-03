@@ -5,15 +5,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 
 function CommentWrite(props) {
-
 	const { headers, setHeaders } = useContext(HttpHeadersContext);
 	const { boardId } = useParams(); // 파라미터 가져오기
 
 	const id = localStorage.getItem("id");
 
-	const navigate = useNavigate();
-
 	const [content, setContent] = useState("");
+	const navigate = useNavigate();
 
 	const chageContent = (event) => {
 		setContent(event.target.value);
@@ -29,11 +27,8 @@ function CommentWrite(props) {
 		.then((resp) => {
 			console.log("[CommentWrite.js] createComment() success :D");
 			console.log(resp.data);
-
-			if (resp.data.seq != null) {
-				alert("댓글을 성공적으로 등록했습니다 :D");
-				navigate(0);
-			}
+			alert("댓글을 성공적으로 등록했습니다 :D");
+			navigate(0);
 
 		}).catch((err) => {
 			console.log("[CommentWrite.js] createComment() error :<");

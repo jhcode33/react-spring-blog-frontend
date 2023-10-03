@@ -1,35 +1,36 @@
+import React , { useRef } from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Pagination from "react-js-pagination";
-
 import Comment from "./Comment.js"
-
-import React from "react";
 import "../../css/commentList.css"; // 스타일 파일 import
 
 function CommentList(props) {
 
-	const seq = props.seq;
+	const boardId = props.boardId;
 
 	// Paging
 	const [page, setPage] = useState(1);
 	const [totalCnt, setTotalCnt] = useState(0);
-
 	const [commentList, setCommentList] = useState([]);
+
+	// comment에서 참조
+	const getCommentListRef  = useRef(null);
 
 	const changePage = (page) => {
 		setPage(page);
 		getCommentList(page);
+		getCommentListRef.current(page);
 	}
 
 	const getCommentList = async (page) => {
-		await axios.get(`http://localhost:3000/comment`, { params: { "bbsSeq": seq, "page": page } })
+		await axios.get(`http://localhost:8989/board/${boardId}/comment/list`, { params: {"page": page - 1} })
 			.then((resp) => {
 				console.log("[BbsComment.js] getCommentList() success :D");
 				console.log(resp.data);
-
-				setCommentList(resp.data.commentList);
-				setTotalCnt(resp.data.pageCnt);
+				
+				setCommentList(resp.data.content);
+				setTotalCnt(resp.data.totalElements);
 
 			}).catch((err) => {
 				console.log("[BbsComment.js] getCommentList() error :<");
@@ -39,14 +40,13 @@ function CommentList(props) {
 	}
 
 	useEffect(() => {
+		getCommentListRef.current = getCommentList;
 		getCommentList(1);
-	}, []);
+	}, [boardId]);
 
 	return (
 		<>
-
 			<div className="my-1 d-flex justify-content-center">
-				<h5><i className="fas fa-paperclip"></i> 댓글 목록 </h5>
 			</div>
 
 			<Pagination
@@ -61,7 +61,7 @@ function CommentList(props) {
 				commentList.map(function (comment, idx) {
 					return (
 						<div className="my-5" key={idx}>
-							<Comment obj={comment} key={idx} />
+							<Comment obj={comment} key={idx} page={page} getCommentList={getCommentListRef.current}/>
 						</div>
 					);
 				})

@@ -10,7 +10,7 @@
     border: 2px solid #ccc; /* 테두리 추가 */
     margin-top: -18px;
     padding: 10px; /* 안쪽 여백 설정 */
-    height: 300px;
+    height: 200px;
     width: auto; /* 최대 너비 설정 (원하는 크기로 조절) */
     overflow: auto; /* 내용이 너무 길 경우 스크롤바 표시 */
   }

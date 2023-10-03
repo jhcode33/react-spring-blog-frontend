@@ -131,9 +131,9 @@ function BbsDetail() {
 				<div className="content-box">{bbs.content}</div>
 				
 				 {/* 댓글 리스트 컴포넌트 */}
-				 <CommentList comments={bbs.comments} />
+				 <CommentList boardId={bbs.boardId} />
 
-				 				{/* 댓글 작성 컴포넌트 */}
+				{/* 댓글 작성 컴포넌트 */}
 				{
 					(auth) ? // 로그인한 사용자만 댓글 작성 가능
 						<CommentWrite boardId={boardId}/>

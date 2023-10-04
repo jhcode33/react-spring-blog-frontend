@@ -61,6 +61,7 @@ function BbsDetail() {
     writerName: bbs.writerName,
     title: bbs.title,
     content: bbs.content,
+	files: bbs.files
   };
 
   const parentBbs = {
@@ -131,11 +132,11 @@ function BbsDetail() {
 
 				<div className="content-box">{bbs.content}</div>
 				<div>
-					<FileDisplay files={bbs.files} boardId={bbs.boardId} />
+					<FileDisplay files={bbs.files} boardId={boardId} />
 				</div>
 				
 				 {/* 댓글 리스트 컴포넌트 */}
-				 <CommentList boardId={bbs.boardId} />
+				 <CommentList boardId={boardId} />
 
 				{/* 댓글 작성 컴포넌트 */}
 				{

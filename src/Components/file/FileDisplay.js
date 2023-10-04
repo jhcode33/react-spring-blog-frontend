@@ -8,7 +8,9 @@ const FileDisplay = (props) => {
   const files = props.files
 
   if (!files || files.length === 0) {
-    return <p>No files available.</p>;
+    return <div className='file-box'>
+              <p>No files</p>
+           </div>
   }
 
   return (

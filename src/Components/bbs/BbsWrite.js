@@ -22,33 +22,30 @@ function BbsWrite() {
 		setContent(event.target.value);
 	}
 
-	const [file, setFile] = useState(null);  // 파일
-  // 파일 변경 감지
-  const handleChangeFile = (event) => {
-    setFile(event.target.files);
-  }
+	const [file, setFile] = useState(null);
+	const handleChangeFile = (event) => {
+	setFile(event.target.files);
+	}
 
-  /* 파일 업로드 */
-  const fileUpload = async (boardId) => {
-    // 파일 데이터 저장
-    const fd = new FormData();
-    Object.values(file).forEach((file) => fd.append("file", file));
+    /* 파일 업로드 */
+	const fileUpload = async (boardId) => {
+        // 파일 데이터 저장
+		const fd = new FormData();
+		Object.values(file).forEach((file) => fd.append("file", file));
 
-    await axios.post(`http://localhost:8989/board/${boardId}/file/upload`, fd, {headers: headers})
-      .then((resp) => {
-        console.log("[file.js] fileUpload() success :D");
-        console.log(resp.data);
+		await axios.post(`http://localhost:8989/board/${boardId}/file/upload`, fd, {headers: headers})
+		.then((resp) => {
+			console.log("[file.js] fileUpload() success :D");
+			console.log(resp.data);
 
-        alert("파일 업로드 성공 :D");
-        // Do something with the response if needed
-        navigate(0)
+			alert("파일 업로드 성공 :D");
 
-      })
-      .catch((err) => {
-        console.log("[FileData.js] fileUpload() error :<");
-        console.log(err);
-      });
-  }
+		})
+		.catch((err) => {
+			console.log("[FileData.js] fileUpload() error :<");
+			console.log(err);
+		});
+	}
 
 	/* [POST /bbs]: 게시글 작성 */
 	const createBbs = async() => {

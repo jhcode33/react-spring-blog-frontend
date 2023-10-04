@@ -1,7 +1,8 @@
 .file-box {
     border: 2px solid #ccc; /* 테두리 추가 */
     margin-top: -2px;
-    padding: 10px; /* 안쪽 여백 설정 */
-    height: 50px;
+    padding-top: 10px; /* 안쪽 여백 설정 */
+    padding-left: 10px;
+    height: auto;
     width: auto; /* 최대 너비 설정 (원하는 크기로 조절) */
 }

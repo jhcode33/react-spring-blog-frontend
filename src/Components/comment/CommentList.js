@@ -11,6 +11,8 @@ function CommentList(props) {
 
 	// Paging
 	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(5);
+	const [totalPages, setTotalPages] = useState(0);
 	const [totalCnt, setTotalCnt] = useState(0);
 	const [commentList, setCommentList] = useState([]);
 
@@ -28,10 +30,11 @@ function CommentList(props) {
 			.then((resp) => {
 				console.log("[BbsComment.js] getCommentList() success :D");
 				console.log(resp.data);
-				
-				setCommentList(resp.data.content);
-				setTotalCnt(resp.data.totalElements);
 
+				setPageSize(resp.data.pageSize);
+				setTotalPages(resp.data.totalPages);
+				setTotalCnt(resp.data.totalElements);
+				setCommentList(resp.data.content);
 			}).catch((err) => {
 				console.log("[BbsComment.js] getCommentList() error :<");
 				console.log(err);
@@ -51,9 +54,9 @@ function CommentList(props) {
 
 			<Pagination
 				activePage={page}
-				itemsCountPerPage={5}
+				itemsCountPerPage={pageSize}
 				totalItemsCount={totalCnt}
-				pageRangeDisplayed={5}
+				pageRangeDisplayed={totalPages}
 				prevPageText={"‹"}
 				nextPageText={"›"}
 				onChange={changePage} />

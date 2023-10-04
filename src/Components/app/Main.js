@@ -10,7 +10,6 @@ function Main() {
         <div className="container">
           <Router></Router>
         </div>
-          <Footer />
       </div>
       
     </main>

@@ -22,22 +22,50 @@ function BbsWrite() {
 		setContent(event.target.value);
 	}
 
+	const [file, setFile] = useState(null);
+	const handleChangeFile = (event) => {
+	setFile(event.target.files);
+	}
+
+    /* 파일 업로드 */
+	const fileUpload = async (boardId) => {
+        // 파일 데이터 저장
+		const fd = new FormData();
+		Object.values(file).forEach((file) => fd.append("file", file));
+
+		await axios.post(`http://localhost:8989/board/${boardId}/file/upload`, fd, {headers: headers})
+		.then((resp) => {
+			console.log("[file.js] fileUpload() success :D");
+			console.log(resp.data);
+
+			alert("파일 업로드 성공 :D");
+
+		})
+		.catch((err) => {
+			console.log("[FileData.js] fileUpload() error :<");
+			console.log(err);
+		});
+	}
+
 	/* [POST /bbs]: 게시글 작성 */
 	const createBbs = async() => {
 
 		const req = {
-			// id: localStorage.getItem("id"), 
 			title: title, 
 			content: content
 		}
 
-		await axios.post("http://localhost:8989/board/write", req, {headers: headers})
-		.then((resp) => {
-			console.log("[BbsWrite.js] createBbs() success :D");
-			console.log(resp.data);
+		await axios
+			.post("http://localhost:8989/board/write", req, {headers: headers})
+			.then((resp) => {
+				console.log("[BbsWrite.js] createBbs() success :D");
+				console.log(resp.data);
+				const boardId = resp.data.boardId;
+				console.log("boardId:", boardId);
+				fileUpload(boardId);
 
-			alert("새로운 게시글을 성공적으로 등록했습니다 :D");
-			navigate(`/bbsdetail/${resp.data.boardId}`); // 새롭게 등록한 글 상세로 이동
+				alert("새로운 게시글을 성공적으로 등록했습니다 :D");
+				navigate(`/bbsdetail/${resp.data.boardId}`); // 새롭게 등록한 글 상세로 이동
 		})
 		.catch((err) => {
 			console.log("[BbsWrite.js] createBbs() error :<");
@@ -81,6 +109,12 @@ function BbsWrite() {
 						<th className="table-primary">내용</th>
 						<td>
 							<textarea className="form-control" value={content} onChange={changeContent} rows="10"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<th className="table-primary">파일</th>
+						<td>
+							<input type='file' name='file' onChange={handleChangeFile} multiple="multiple" />
 						</td>
 					</tr>
 				</tbody>

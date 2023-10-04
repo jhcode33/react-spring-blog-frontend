@@ -15,6 +15,8 @@ function BbsList() {
 
   // Paging
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
   const [totalCnt, setTotalCnt] = useState(0);
 
   // 게시글 전체 조회
@@ -28,6 +30,8 @@ function BbsList() {
       console.log(response.data);
 
       setBbsList(response.data.content);
+      setPageSize(response.data.pageSize);
+      setTotalPages(response.data.totalPages);
       setTotalCnt(response.data.totalElements);
     } catch (error) {
       console.log("[BbsList.js] useEffect() error :<");
@@ -60,7 +64,7 @@ function BbsList() {
 
   // 첫 로딩 시, 한 페이지만 가져옴
   useEffect(() => {
-    getBbsList("", "", 1);
+    getBbsList(1);
   }, []);
 
   // 검색 조건 저장
@@ -70,7 +74,7 @@ function BbsList() {
   // 페이징 보여주기 
   const changePage = (page) => {
     setPage(page);
-    getBbsList(choiceVal, searchVal, page);
+    getBbsList(page);
   };
 
   return (
@@ -134,9 +138,9 @@ function BbsList() {
       <Pagination
         className="pagination"
         activePage={page}
-        itemsCountPerPage={5} // Assuming you want 5 items per page based on your pageSize in JSON
+        itemsCountPerPage={pageSize}
         totalItemsCount={totalCnt}
-        pageRangeDisplayed={5}
+        pageRangeDisplayed={totalPages}
         prevPageText={"‹"}
         nextPageText={"›"}
         onChange={changePage}

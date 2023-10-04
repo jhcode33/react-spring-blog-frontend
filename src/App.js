@@ -19,9 +19,9 @@ function App() {
             <Header />
             {/* <Nav /> */}
             <Main />
+            <Footer />
           </HttpHeadersProvider>
         </AuthProvider>
-            
       </BrowserRouter>
     </div>
   );

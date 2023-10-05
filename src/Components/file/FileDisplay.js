@@ -19,11 +19,12 @@ const FileDisplay = (props) => {
         {files.map((file) => (
           <li key={file.fileId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span>
-              <strong>File Name:</strong> {file.originFileName} &nbsp;
               {/* 파일 다운로드 버튼 */}
-              <a href={`http://localhost:8989/board/${boardId}/file/download?fileId=${file.fileId}`} download>
-                Download
-              </a>
+              [<a href={`http://localhost:8989/board/${boardId}/file/download?fileId=${file.fileId}`} download>Download</a>] &nbsp;
+              <strong>File Name:</strong> &nbsp;
+                {file.originFileName}
+              
+              
             </span>
           </li>
         ))}

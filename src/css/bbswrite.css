@@ -1,0 +1,15 @@
+/* 파일 삭제 버튼 스타일링 */
+.delete-button {
+    background-color: #ff5f5f;
+    color: #fff;
+    border: none;
+    padding: 0px 2px 2px 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.delete-button:hover {
+    background-color: #d43434;
+}

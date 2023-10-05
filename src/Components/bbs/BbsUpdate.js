@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { HttpHeadersContext } from "../context/HttpHeadersProvider";
-import FileManager from "../file/FileManager";
+
+import "../../css/bbsupdate.css";
 
 function BbsUpdate() {
 	const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -16,8 +17,8 @@ function BbsUpdate() {
 	const boardId = bbs.boardId;
 	const [title, setTitle] = useState(bbs.title);
 	const [content, setContent] = useState(bbs.content);
-	const [files, setFile] = useState([]);
-  	const [updatedFilesArray, setUpdatedFilesArray] = useState(bbs.files || []);
+	const [files, setFiles] = useState([]);
+	const [severFiles, setSeverFiles ] = useState(bbs.files || []);
 
 	const changeTitle = (event) => {
 		setTitle(event.target.value);
@@ -28,61 +29,60 @@ function BbsUpdate() {
 	}
 
 	const handleChangeFile = (event) => {
-		setFile(event.target.files);
-	}
+		// 총 5개까지만 허용
+		const selectedFiles = Array.from(event.target.files).slice(0, 5);
+		setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+	};
 
-    const handleChangeUpdatedFilesArray = (updatedFiles) => {
-		setUpdatedFilesArray([...updatedFiles])
+	const handleRemoveFile = (index) => {
+		setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+	};
+
+	const handleRemoveSeverFile = (index, boardId, fileId) => {
+		setSeverFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+		fileDelete(boardId, fileId);
 	}
 
 	useEffect(() => {
-		setFile([...updatedFilesArray]);
-	}, [updatedFilesArray]);
+		setHeaders({
+			"Authorization": `Bearer ${localStorage.getItem("bbs_access_token")}`
+		});
+	}, []);
+	
 
 	/* 파일 업로드 */
 	const fileUpload = async (boardId) => {
-        // 파일 데이터 저장
+		console.log("업로드할 파일 목록:", files);
+		// 파일 데이터 저장
 		const fd = new FormData();
-		Object.values(files).forEach((file) => fd.append("file", file));
+		files.forEach((file) => fd.append(`file`, file));
 
 		await axios.post(`http://localhost:8989/board/${boardId}/file/upload`, fd, {headers: headers})
-		.then((resp) => {
-			console.log("[file.js] fileUpload() success :D");
-			console.log(resp.data);
-
-			alert("파일 업로드 성공 :D");
-			navigate(`/bbsdetail/${bbs.boardId}`); // 글 상세로 이동
-		})
-		.catch((err) => {
-			console.log("[FileData.js] fileUpload() error :<");
-			console.log(err);
-		});
-	}
+			.then((resp) => {
+				console.log("[file.js] fileUpload() success :D");
+				console.log(resp.data);
+				alert("게시물과 파일을 성공적으로 수정했습니다. :D");
+				
+				// 새롭게 등록한 글 상세로 이동
+				navigate(`/bbsdetail/${boardId}`); 
+			})
+			.catch((err) => {
+				console.log("[FileData.js] fileUpload() error :<");
+				console.log(err);
+			});
+	};
 
 	/* 파일 삭제 */
 	const fileDelete = async (boardId, fileId) => {
 		try {
-		await axios.delete(`http://localhost:8989/board/${boardId}/file/delete?fileId=${fileId}`, {headers: headers});
-		console.log("[FielManager.js] fileDelete() success :D");
-	
-		// 서버로부터 업데이트된 게시글 정보를 가져옴
-		const updatedBbs = await axios.get(`http://localhost:8989/board/${boardId}`, { headers: headers });
-		const updatedFilesArray = Array.isArray(updatedBbs.data.files) ? updatedBbs.data.files : [];
-	
-		console.log("Updated files array:", updatedFilesArray);
-	
-		alert("파일 삭제 성공 :D");
-	
-		// 업데이트된 파일 목록으로 상태를 업데이트
-		handleChangeUpdatedFilesArray(updatedFilesArray);
-		console.log(files);
-
+			await axios.delete(`http://localhost:8989/board/${boardId}/file/delete?fileId=${fileId}`, {headers: headers});
+				console.log("[BbsUpdate.js] fileDelete() success :D");
+				alert("파일 삭제 성공 :D");
 		} catch (error) {
-			console.error("[FielManager.js] fileDelete() error :<");
+			console.error("[BbsUpdate.js] fileDelete() error :<");
 			console.error(error);
 		}
 	};
-  
 
 	/* 게시판 수정 */
 	const updateBbs = async () => {
@@ -99,11 +99,12 @@ function BbsUpdate() {
 			console.log(resp.data);
 			const boardId = resp.data.boardId;
 
-			if (boardId != null) {
-				alert("게시글을 성공적으로 수정했습니다 :D");
+			if (files.length > 0) {
 				fileUpload(boardId);
+			} else {
+				alert("게시글을 성공적으로 수정했습니다 :D");
+				navigate(`/bbsdetail/${resp.data.boardId}`); // 새롭게 등록한 글 상세로 이동
 			}
-
 		})
 		.catch((err) => {
 			console.log("[BbsUpdate.js] updateBbs() error :<");
@@ -140,26 +141,30 @@ function BbsUpdate() {
 					<tr>
 					<th className="table-primary">파일</th>
 					<td>
-					{updatedFilesArray.length > 0 ? (
+					{severFiles.length > 0 || files.length > 0 ? (
 						<div className='file-box'>
 							<ul>
-								{updatedFilesArray.map((file) => (
+								{/* 기존의 파일 데이터, 삭제 로직 */}
+								{severFiles.map((file, index) => (
 									<li key={file.fileId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 										<span>
 											<strong>File Name:</strong> {file.originFileName} &nbsp;
-											{/* 파일 다운로드 버튼 */}
-											<a href={`http://localhost:8989/board/${boardId}/file/download?fileId=${file.fileId}`} download>
-												Download
-											</a>
+											<button className="delete-button" type="button" onClick={() => handleRemoveSeverFile(index, boardId, file.fileId)}>
+												x
+											</button>
 										</span>
-										{/* 삭제 버튼을 가장 오른쪽에 배치하기 */}
-										<button
-											style={{ marginRight: '20px', cursor: 'pointer' }}
-											onClick={() => fileDelete(boardId, file.fileId)}
-										>
-											삭제
-										</button>
 									</li>
+								))}
+								{/* 새로운 파일을 저장할 때 */}
+								{files.map((file, index) => (
+									<li key={file.fileId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<span>
+										<strong>File Name:</strong> {file.name} &nbsp;
+										<button className="delete-button" type="button" onClick={() => handleRemoveFile(index)}>
+											x
+										</button>
+									</span>
+								</li>
 								))}
 							</ul>
 						</div>
@@ -168,7 +173,7 @@ function BbsUpdate() {
 							<p>No files</p>
 						</div>
 					)}
-					<div className='file-box'>
+					<div className='file-select-box'>
 							<input type='file' name='file' onChange={handleChangeFile} multiple="multiple" />
 					</div>
 					</td>

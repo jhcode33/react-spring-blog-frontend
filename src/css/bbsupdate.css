@@ -1,0 +1,21 @@
+/* 파일 삭제 버튼 스타일링 */
+.delete-button {
+    background-color: #ff5f5f;
+    color: #fff;
+    border: none;
+    padding: 0px 2px 2px 2px;
+    margin: 0px 0px 0px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #d43434;
+}
+
+.file-select-box {
+    margin: -2px 0px 0px 0px;
+    padding: 10px 0px 0px 10px;
+    height: auto;
+    width: auto; /* 최대 너비 설정 (원하는 크기로 조절) */
+}

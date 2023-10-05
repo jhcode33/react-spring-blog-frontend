@@ -3,6 +3,7 @@
     margin-top: -2px;
     padding-top: 10px; /* 안쪽 여백 설정 */
     padding-left: 10px;
+    padding-bottom: 10px;
     height: auto;
     width: auto; /* 최대 너비 설정 (원하는 크기로 조절) */
 }

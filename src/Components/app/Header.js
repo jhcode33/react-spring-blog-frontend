@@ -49,10 +49,9 @@ function Header() {
                 <>
                   {/* 회원 정보 */}
                   <li className="nav-item">
-                    <span className="nav-link">
-                      {auth} 님 반갑습니다 <i className="fab fa-ello"></i>{" "}
-                      &nbsp;{" "}
-                    </span>
+                      <Link className="nav-link" to="/checkpwd">
+                        <i className="fas fa-sign-out-alt"></i> {auth} 님 반갑습니다 <i className="fab fa-ello"></i>{" "} &nbsp;{" "}
+                      </Link>
                   </li>
 
                   {/* 로그아웃 */}

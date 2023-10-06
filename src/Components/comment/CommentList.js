@@ -12,7 +12,7 @@ function CommentList(props) {
 	// Paging
 	const [page, setPage] = useState(1);
 	const [pageSize, setPageSize] = useState(5);
-	const [totalPages, setTotalPages] = useState(0);
+	const [totalPages, setTotalPages] = useState(5);
 	const [totalCnt, setTotalCnt] = useState(0);
 	const [commentList, setCommentList] = useState([]);
 
@@ -54,9 +54,9 @@ function CommentList(props) {
 
 			<Pagination
 				activePage={page}
-				itemsCountPerPage={pageSize}
+				itemsCountPerPage={5}
 				totalItemsCount={totalCnt}
-				pageRangeDisplayed={totalPages}
+				pageRangeDisplayed={5}
 				prevPageText={"‹"}
 				nextPageText={"›"}
 				onChange={changePage} />

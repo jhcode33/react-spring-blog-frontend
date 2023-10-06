@@ -4,7 +4,7 @@
 ### `npm install`
 
 Install the modules used by node.js through node package manager (npm).\
-Refer to the package.json file for the current project to install the dependency module collectively.\
+Refer to the package.json file for the current project to install the dependency module collectively.
 
 node package manager(npm)을 통해서 node.js에서 사용하는 모듈들을설치합니다.\
 현재 프로젝트의 package.json 파일을 참고하여 의존성 모듈을  일괄적으로 설치합니다.
@@ -15,7 +15,7 @@ node package manager(npm)을 통해서 node.js에서 사용하는 모듈들을�
 > 'react-scripts'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는 배치 파일이 아닙니다
 
 Command to execute when the above error occurs.\
-Also, look at the package.json file and check the version of the react-scripts command.\
+Also, look at the package.json file and check the version of the react-scripts command.
 
 'react-scripts' 오류가 발생할 때 실행하는 명령어입니다.\
 또한 package.json 파일을 살펴보고 react-scripts 명령어가 실행하는 버전을 확인해주세요.

@@ -31,3 +31,5 @@ You may also see any lint errors in the console.
 앱을 개발 모드로 실행합니다.\
 [http://localhost:3000](http://localhost:3000)을 열어 브라우저에서 볼 수 있습니다.\
 코드를 변경하면 페이지가 다시 로드되며, 콘솔에서 오류를 확인할 수도 있습니다.
+
+## 프로젝트 회고
